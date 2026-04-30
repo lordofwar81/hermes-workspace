@@ -37,12 +37,12 @@ describe('resolveJobsProfile', () => {
 
   it('falls back to file-backed active profile when env is absent', () => {
     const url = new URL('http://localhost/api/hermes-jobs')
-    expect(resolveJobsProfile(url, null, () => 'file-one')).toBe('file-one')
+    expect(resolveJobsProfile(url, undefined, () => 'file-one')).toBe('file-one')
   })
 
   it('ignores the default sentinel from active_profile', () => {
     const url = new URL('http://localhost/api/hermes-jobs')
-    expect(resolveJobsProfile(url, null, () => 'default')).toBeNull()
+    expect(resolveJobsProfile(url, undefined, () => 'default')).toBeNull()
   })
 })
 

@@ -260,7 +260,7 @@ function buildCsv(usage: UsageSummary): string {
   )
   usage.sessions.forEach((session) => {
     rows.push(
-      `${session.id},${session.model},${session.inputTokens},${session.outputTokens},${session.costUsd.toFixed(4)},${formatTimestamp(session.startedAt, use24HourTime)},${formatTimestamp(session.updatedAt, use24HourTime)}`,
+      `${session.id},${session.model},${session.inputTokens},${session.outputTokens},${session.costUsd.toFixed(4)},${formatTimestamp(session.startedAt, true)},${formatTimestamp(session.updatedAt, true)}`,
     )
   })
   return rows.join('\n')
@@ -281,6 +281,7 @@ export function UsageDetailsModal({
     'providers',
   )
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const use24HourTime = true
 
   const handleSetDefault = (provider: string) => {
     onSetPreferredProvider?.(provider)

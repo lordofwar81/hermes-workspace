@@ -597,9 +597,7 @@ export function useStreamingMessage(options: UseStreamingMessageOptions = {}) {
             type: 'done',
             state: doneState ?? 'final',
             errorMessage,
-            message: (payload).message as
-              | Record<string, unknown>
-              | undefined,
+            message: (payload as { message?: ChatMessage }).message,
             runId: activeRunIdRef.current ?? undefined,
             sessionKey: activeSessionKeyRef.current,
             transport: 'send-stream',

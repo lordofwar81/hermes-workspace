@@ -480,10 +480,10 @@ function getChronologyRank(message: ChatMessage): number {
   const content = Array.isArray(message.content) ? message.content : []
   const hasToolCalls =
     content.some((part) => part.type === 'toolCall') ||
-    (Array.isArray((message as any).streamToolCalls) &&
-      (message as any).streamToolCalls.length > 0) ||
-    (Array.isArray((message as any).__streamToolCalls) &&
-      (message as any).__streamToolCalls.length > 0)
+    (Array.isArray((message as Record<string, unknown>).streamToolCalls) &&
+      ((message as Record<string, unknown>).streamToolCalls as Array<unknown>).length > 0) ||
+    (Array.isArray(message.__streamToolCalls) &&
+      message.__streamToolCalls.length > 0)
 
   if (role === 'user') return 0
   if (role === 'assistant' && hasToolCalls) return 1
@@ -509,12 +509,12 @@ function sortMessagesChronologically(
       if (leftRank !== rightRank) return leftRank - rightRank
 
       const leftHistoryIndex =
-        typeof (left.message as any).__historyIndex === 'number'
-          ? (left.message as any).__historyIndex
+        typeof (left.message as Record<string, unknown>).__historyIndex === 'number'
+          ? (left.message as Record<string, unknown>).__historyIndex as number
           : undefined
       const rightHistoryIndex =
-        typeof (right.message as any).__historyIndex === 'number'
-          ? (right.message as any).__historyIndex
+        typeof (right.message as Record<string, unknown>).__historyIndex === 'number'
+          ? (right.message as Record<string, unknown>).__historyIndex as number
           : undefined
       if (
         leftHistoryIndex !== undefined &&
@@ -525,12 +525,12 @@ function sortMessagesChronologically(
       }
 
       const leftRealtimeSequence =
-        typeof (left.message as any).__realtimeSequence === 'number'
-          ? (left.message as any).__realtimeSequence
+        typeof left.message.__realtimeSequence === 'number'
+          ? left.message.__realtimeSequence
           : undefined
       const rightRealtimeSequence =
-        typeof (right.message as any).__realtimeSequence === 'number'
-          ? (right.message as any).__realtimeSequence
+        typeof right.message.__realtimeSequence === 'number'
+          ? right.message.__realtimeSequence
           : undefined
       if (
         leftRealtimeSequence !== undefined &&
@@ -808,13 +808,13 @@ function ChatMessageListComponent({
           .join('')
           .trim()
         const hasAttachments =
-          Array.isArray((msg as any).attachments) &&
-          (msg as any).attachments.length > 0
+          Array.isArray(msg.attachments) &&
+          msg.attachments.length > 0
         const hasInlineImages =
-          Array.isArray((msg as any).inlineImages) &&
-          (msg as any).inlineImages.length > 0
+          Array.isArray(msg.inlineImages) &&
+          msg.inlineImages.length > 0
         const isPendingOptimisticUserMessage =
-          typeof (msg as any).__optimisticId === 'string' ||
+          typeof msg.__optimisticId === 'string' ||
           msg.status === 'sending' ||
           msg.status === 'queued'
 
@@ -852,13 +852,14 @@ function ChatMessageListComponent({
 
     const seenMessageIds = new Set<string>()
     const deduped = filteredMessages.filter((message) => {
+      const rawMsg = message as Record<string, unknown>
       const messageId =
-        (message as any).id ||
-        (message as any).messageId ||
-        (message as any).clientId ||
-        (message as any).client_id ||
-        (message as any).nonce ||
-        (message as any).__optimisticId
+        message.id ||
+        message.messageId ||
+        message.clientId ||
+        rawMsg.client_id as string | undefined ||
+        rawMsg.nonce as string | undefined ||
+        message.__optimisticId
       if (typeof messageId !== 'string' || messageId.trim().length === 0) {
         return true
       }
@@ -1287,7 +1288,7 @@ function ChatMessageListComponent({
 
   function isMessageStreaming(message: ChatMessage, index: number) {
     if (!isStreaming || !streamingMessageId) return false
-    const messageId = message.__optimisticId || (message as any).id
+    const messageId = message.__optimisticId || message.id
     return (
       messageId === streamingMessageId ||
       (message.role === 'assistant' && index === lastAssistantIndex)
@@ -1911,12 +1912,12 @@ function ChatMessageListComponent({
 }
 
 function getMessageSpacingClass(
-  messages: Array<ChatMessage>,
+  entries: Array<DisplayEntry>,
   index: number,
 ): string {
   if (index === 0) return 'mt-0'
-  const currentRole = messages[index]?.role ?? 'assistant'
-  const previousRole = messages[index - 1]?.role ?? 'assistant'
+  const currentRole = entries[index]?.message.role ?? 'assistant'
+  const previousRole = entries[index - 1]?.message.role ?? 'assistant'
   if (currentRole === previousRole) {
     return 'mt-1 md:mt-1.5'
   }
@@ -1927,25 +1928,27 @@ function getMessageSpacingClass(
 }
 
 function getToolGroupClass(
-  messages: Array<ChatMessage>,
+  entries: Array<DisplayEntry>,
   index: number,
 ): string {
-  const message = messages[index]
-  if (!message || message.role !== 'assistant') return ''
+  const entry = entries[index]
+  if (!entry) return ''
+  const message = entry.message
+  if (message.role !== 'assistant') return ''
   const hasToolCalls = getToolCallsFromMessage(message).length > 0
   if (!hasToolCalls) return ''
 
   let previousUserIndex = -1
   for (let i = index - 1; i >= 0; i -= 1) {
-    if (messages[i]?.role === 'user') {
+    if (entries[i]?.message.role === 'user') {
       previousUserIndex = i
       break
     }
   }
 
   let nextUserIndex = -1
-  for (let i = index + 1; i < messages.length; i += 1) {
-    if (messages[i]?.role === 'user') {
+  for (let i = index + 1; i < entries.length; i += 1) {
+    if (entries[i]?.message.role === 'user') {
       nextUserIndex = i
       break
     }
@@ -1976,11 +1979,11 @@ function getStableMessageId(message: ChatMessage, index: number): string {
 
 function getRawMessageTimestamp(message: ChatMessage): number | null {
   const candidates = [
-    (message as any).createdAt,
-    (message as any).created_at,
-    (message as any).timestamp,
-    (message as any).time,
-    (message as any).ts,
+    message.createdAt,
+    message.created_at,
+    message.timestamp,
+    message.time,
+    message.ts,
   ]
   for (const candidate of candidates) {
     if (typeof candidate === 'number' && Number.isFinite(candidate)) {

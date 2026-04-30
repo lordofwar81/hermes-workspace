@@ -366,11 +366,11 @@ function normalizeTimestamp(value: unknown): number | null {
 
 function rawTimestamp(message: ChatMessage): number | null {
   const candidates = [
-    (message as any).createdAt,
-    (message as any).created_at,
-    (message as any).timestamp,
-    (message as any).time,
-    (message as any).ts,
+    message.createdAt,
+    message.created_at,
+    message.timestamp,
+    message.time,
+    message.ts,
   ]
   for (const candidate of candidates) {
     const normalized = normalizeTimestamp(candidate)
@@ -408,7 +408,7 @@ function normalizeStreamToolPhase(
 }
 
 function readExecNotification(message: ChatMessage): ExecNotification | null {
-  const raw = (message as any).__execNotification as
+  const raw = message.__execNotification as
     | Record<string, unknown>
     | undefined
   if (!raw || typeof raw !== 'object') return null

@@ -185,7 +185,7 @@ function buildPortableHistory(
         message.role === 'assistant' ||
         message.role === 'system',
     )
-    .filter((message) => (message as any).__streamingStatus !== 'streaming')
+    .filter((message) => message.__streamingStatus !== 'streaming')
     .map((message) => {
       const content = getPortableHistoryContent(message)
       if (!content) return null
@@ -842,7 +842,7 @@ export function ChatScreen({
     // Snapshot any unconfirmed optimistic user messages BEFORE refetch.
     // The refetch replaces the query cache with server data — if the server
     // hasn't processed the user's POST yet, the optimistic message vanishes.
-    const currentMessages = (historyQuery.data as any)?.messages as
+    const currentMessages = (historyQuery.data as Record<string, unknown> | undefined)?.messages as
       | Array<ChatMessage>
       | undefined
     const pendingOptimistic = (currentMessages ?? []).filter((msg) => {
@@ -1019,7 +1019,7 @@ export function ChatScreen({
     messages: historyMessages.map((m) => ({
       role: m.role as 'user' | 'assistant',
       content: textFromMessage(m),
-    })) as any,
+    })) as Array<{ role: 'user' | 'assistant'; content: string }>,
     availableModels: availableModelIds,
   })
 
@@ -1197,13 +1197,13 @@ export function ChatScreen({
       }
       if (msg.role === 'assistant') {
         if (msg.__streamingStatus === 'streaming') return true
-        if ((msg as any).__optimisticId && !msg.content?.length) return true
+        if (msg.__optimisticId && !msg.content?.length) return true
         if (textFromMessage(msg).trim().length > 0) return true
         const content = Array.isArray(msg.content) ? msg.content : []
         const hasToolCalls = content.some((part) => part.type === 'toolCall')
         const hasStreamToolCalls =
-          Array.isArray((msg as any).__streamToolCalls) &&
-          (msg as any).__streamToolCalls.length > 0
+          Array.isArray(msg.__streamToolCalls) &&
+          msg.__streamToolCalls.length > 0
         return hasToolCalls || hasStreamToolCalls
       }
       return false
@@ -1335,7 +1335,7 @@ export function ChatScreen({
       const id = isPortableMode
         ? localStreamingMessageId
         : last?.role === 'assistant'
-          ? (last as any).__optimisticId || (last as any).id || null
+          ? last.__optimisticId || last.id || null
           : null
       return { isStreaming: true, streamingMessageId: id }
     }
@@ -1343,14 +1343,14 @@ export function ChatScreen({
       const last = finalDisplayMessages[finalDisplayMessages.length - 1]
       if (last && last.role === 'assistant') {
         const isStreamingPlaceholder =
-          (last as any).__streamingStatus === 'streaming'
+          last.__streamingStatus === 'streaming'
         if (!isStreamingPlaceholder) {
           return {
             isStreaming: false,
             streamingMessageId: null as string | null,
           }
         }
-        const id = (last as any).__optimisticId || (last as any).id || null
+        const id = last.__optimisticId || last.id || null
         return { isStreaming: true, streamingMessageId: id }
       }
     }
@@ -1401,7 +1401,7 @@ export function ChatScreen({
     }
     const last = finalDisplayMessages[finalDisplayMessages.length - 1]
     if (!last || last.role !== 'assistant') return
-    if ((last as any).__streamingStatus === 'streaming') return
+    if (last.__streamingStatus === 'streaming') return
     const countGrew =
       finalDisplayMessages.length > messageCountAtSendRef.current
     const raw = last as Record<string, unknown>
@@ -1920,10 +1920,10 @@ export function ChatScreen({
       pending.sessionKey,
     )
     const cached = queryClient.getQueryData(historyKey)
-    const cachedMessages = Array.isArray((cached as any)?.messages)
-      ? (cached as any).messages
+    const cachedMessages = Array.isArray((cached as Record<string, unknown> | undefined)?.messages)
+      ? (cached as Record<string, unknown>).messages as Array<ChatMessage>
       : []
-    const alreadyHasOptimistic = cachedMessages.some((message: any) => {
+    const alreadyHasOptimistic = cachedMessages.some((message) => {
       if (pending.optimisticMessage.clientId) {
         if (message.clientId === pending.optimisticMessage.clientId) return true
         if (message.__optimisticId === pending.optimisticMessage.clientId)

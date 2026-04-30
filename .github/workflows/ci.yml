@@ -30,15 +30,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Run linter
-        run: pnpm run lint || echo "⚠️ Lint not configured, skipping"
-        continue-on-error: true
+        run: pnpm run lint
 
       - name: Type check
-        run: pnpm run typecheck || pnpm exec tsc --noEmit || echo "⚠️ Typecheck not configured"
-        continue-on-error: true
+        run: pnpm exec tsc --noEmit
 
       - name: Build
         run: pnpm build
@@ -74,8 +72,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Run tests
-        run: pnpm test || echo "⚠️ No tests configured"
-        continue-on-error: true
+        run: pnpm test
