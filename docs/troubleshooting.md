@@ -117,6 +117,42 @@ This means the Vite SSR server tried `GET /api/gateway-status` which internally 
 
 ---
 
+### Docker: Skills Hub / Marketplace only shows bundled skills
+
+The published `ghcr.io/outsourc-e/hermes-workspace` image is intentionally
+self-contained for the Workspace UI and bundled skills. It does **not** include a
+full Hermes Agent source checkout plus Python Skills Hub dependencies for
+non-bundled registry search.
+
+When full hub search is unavailable, `GET /api/skills/hub-search` falls back to
+installed/bundled skills and returns:
+
+```json
+{
+  "source": "bundled-skills-fallback",
+  "warning": "Skills Hub search is unavailable in this runtime; showing bundled skills fallback."
+}
+```
+
+To enable full Marketplace / Skills Hub registry search in Docker, use one of:
+
+1. The source/dev overlay, which builds from local source:
+
+   ```bash
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+   ```
+
+2. A derived image that adds `python3`, `scripts/skills-search.py`, and the
+   Hermes Agent Python package/source tree expected by the search script.
+
+3. A host-mounted Hermes Agent checkout plus matching environment variables, if
+   your deployment platform supports bind mounts.
+
+If you only need the skills bundled with the Workspace image, no action is
+required; the fallback mode is expected.
+
+---
+
 ## Diagnostic bundle
 
 If nothing above helps, run this and share the output:

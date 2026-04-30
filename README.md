@@ -346,6 +346,14 @@ No local build. First run takes a minute to pull; subsequent starts are instant.
 Agent state (config, sessions, skills, memory, credentials) persists in the
 `hermes-data` named volume, so containers can be recreated without data loss.
 
+> **Skills Hub note:** the published `ghcr.io/outsourc-e/hermes-workspace` image
+> includes the bundled skills fallback. Full Marketplace / Skills Hub registry
+> search needs the Python `scripts/skills-search.py` runtime plus a Hermes Agent
+> source/install tree; use the source/dev Docker overlay or a derived image if
+> you need non-bundled hub results from an image-only deployment. The
+> `/api/skills/hub-search` response includes `source: "bundled-skills-fallback"`
+> and a `warning` when the container is running fallback-only mode.
+
 ### Step 3: Access the Workspace
 
 Open `http://localhost:3000` and complete the onboarding.
