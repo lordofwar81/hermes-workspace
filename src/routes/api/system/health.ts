@@ -57,7 +57,7 @@ export const Route = createFileRoute('/api/system/health')({
                 ),
                 checkService(
                   'Hermes Dashboard',
-                  'http://127.0.0.1:9119/api/health',
+                  'http://127.0.0.1:9119/',
                 ),
               ])
               return Response.json({
