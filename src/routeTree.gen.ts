@@ -11,12 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerminalRouteImport } from './routes/terminal'
 import { Route as TasksRouteImport } from './routes/tasks'
+import { Route as SystemRouteImport } from './routes/system'
 import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ProfilesRouteImport } from './routes/profiles'
 import { Route as OperationsRouteImport } from './routes/operations'
+import { Route as MemoryV2RouteImport } from './routes/memory-v2'
 import { Route as MemoryRouteImport } from './routes/memory'
 import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as FilesRouteImport } from './routes/files'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ConductorRouteImport } from './routes/conductor'
@@ -54,6 +57,7 @@ import { Route as ApiHermesJobsRouteImport } from './routes/api/hermes-jobs'
 import { Route as ApiHermesConfigRouteImport } from './routes/api/hermes-config'
 import { Route as ApiGatewayStatusRouteImport } from './routes/api/gateway-status'
 import { Route as ApiFilesRouteImport } from './routes/api/files'
+import { Route as ApiFactStoreRouteImport } from './routes/api/fact-store'
 import { Route as ApiEventsRouteImport } from './routes/api/events'
 import { Route as ApiCrewStatusRouteImport } from './routes/api/crew-status'
 import { Route as ApiContextUsageRouteImport } from './routes/api/context-usage'
@@ -64,6 +68,8 @@ import { Route as ApiConductorSpawnRouteImport } from './routes/api/conductor-sp
 import { Route as ApiChatEventsRouteImport } from './routes/api/chat-events'
 import { Route as ApiAuthCheckRouteImport } from './routes/api/auth-check'
 import { Route as ApiAuthRouteImport } from './routes/api/auth'
+import { Route as ApiSystemHealthRouteImport } from './routes/api/system/health'
+import { Route as ApiSystemCronjobsRouteImport } from './routes/api/system/cronjobs'
 import { Route as ApiSkillsUninstallRouteImport } from './routes/api/skills/uninstall'
 import { Route as ApiSkillsToggleRouteImport } from './routes/api/skills/toggle'
 import { Route as ApiSkillsInstallRouteImport } from './routes/api/skills/install'
@@ -94,6 +100,8 @@ import { Route as ApiKnowledgeConfigRouteImport } from './routes/api/knowledge/c
 import { Route as ApiHermesTasksTaskIdRouteImport } from './routes/api/hermes-tasks.$taskId'
 import { Route as ApiHermesProxySplatRouteImport } from './routes/api/hermes-proxy/$'
 import { Route as ApiHermesJobsJobIdRouteImport } from './routes/api/hermes-jobs.$jobId'
+import { Route as ApiHealthPeptidesRouteImport } from './routes/api/health/peptides'
+import { Route as ApiHealthMetricsRouteImport } from './routes/api/health/metrics'
 import { Route as ApiSessionsSessionKeyStatusRouteImport } from './routes/api/sessions/$sessionKey.status'
 import { Route as ApiSessionsSessionKeyActiveRunRouteImport } from './routes/api/sessions/$sessionKey.active-run'
 
@@ -105,6 +113,11 @@ const TerminalRoute = TerminalRouteImport.update({
 const TasksRoute = TasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemRoute = SystemRouteImport.update({
+  id: '/system',
+  path: '/system',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SkillsRoute = SkillsRouteImport.update({
@@ -127,6 +140,11 @@ const OperationsRoute = OperationsRouteImport.update({
   path: '/operations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MemoryV2Route = MemoryV2RouteImport.update({
+  id: '/memory-v2',
+  path: '/memory-v2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MemoryRoute = MemoryRouteImport.update({
   id: '/memory',
   path: '/memory',
@@ -135,6 +153,11 @@ const MemoryRoute = MemoryRouteImport.update({
 const JobsRoute = JobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FilesRoute = FilesRouteImport.update({
@@ -322,6 +345,11 @@ const ApiFilesRoute = ApiFilesRouteImport.update({
   path: '/api/files',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFactStoreRoute = ApiFactStoreRouteImport.update({
+  id: '/api/fact-store',
+  path: '/api/fact-store',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiEventsRoute = ApiEventsRouteImport.update({
   id: '/api/events',
   path: '/api/events',
@@ -370,6 +398,16 @@ const ApiAuthCheckRoute = ApiAuthCheckRouteImport.update({
 const ApiAuthRoute = ApiAuthRouteImport.update({
   id: '/api/auth',
   path: '/api/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSystemHealthRoute = ApiSystemHealthRouteImport.update({
+  id: '/api/system/health',
+  path: '/api/system/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSystemCronjobsRoute = ApiSystemCronjobsRouteImport.update({
+  id: '/api/system/cronjobs',
+  path: '/api/system/cronjobs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSkillsUninstallRoute = ApiSkillsUninstallRouteImport.update({
@@ -522,6 +560,16 @@ const ApiHermesJobsJobIdRoute = ApiHermesJobsJobIdRouteImport.update({
   path: '/$jobId',
   getParentRoute: () => ApiHermesJobsRoute,
 } as any)
+const ApiHealthPeptidesRoute = ApiHealthPeptidesRouteImport.update({
+  id: '/api/health/peptides',
+  path: '/api/health/peptides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthMetricsRoute = ApiHealthMetricsRouteImport.update({
+  id: '/api/health/metrics',
+  path: '/api/health/metrics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSessionsSessionKeyStatusRoute =
   ApiSessionsSessionKeyStatusRouteImport.update({
     id: '/$sessionKey/status',
@@ -541,12 +589,15 @@ export interface FileRoutesByFullPath {
   '/conductor': typeof ConductorRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
+  '/health': typeof HealthRoute
   '/jobs': typeof JobsRoute
   '/memory': typeof MemoryRoute
+  '/memory-v2': typeof MemoryV2Route
   '/operations': typeof OperationsRoute
   '/profiles': typeof ProfilesRoute
   '/settings': typeof SettingsRouteWithChildren
   '/skills': typeof SkillsRoute
+  '/system': typeof SystemRoute
   '/tasks': typeof TasksRoute
   '/terminal': typeof TerminalRoute
   '/api/auth': typeof ApiAuthRoute
@@ -559,6 +610,7 @@ export interface FileRoutesByFullPath {
   '/api/context-usage': typeof ApiContextUsageRoute
   '/api/crew-status': typeof ApiCrewStatusRoute
   '/api/events': typeof ApiEventsRoute
+  '/api/fact-store': typeof ApiFactStoreRoute
   '/api/files': typeof ApiFilesRoute
   '/api/gateway-status': typeof ApiGatewayStatusRoute
   '/api/hermes-config': typeof ApiHermesConfigRoute
@@ -591,6 +643,8 @@ export interface FileRoutesByFullPath {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat/': typeof ChatIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/api/health/metrics': typeof ApiHealthMetricsRoute
+  '/api/health/peptides': typeof ApiHealthPeptidesRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -621,6 +675,8 @@ export interface FileRoutesByFullPath {
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
   '/api/skills/uninstall': typeof ApiSkillsUninstallRoute
+  '/api/system/cronjobs': typeof ApiSystemCronjobsRoute
+  '/api/system/health': typeof ApiSystemHealthRoute
   '/api/sessions/$sessionKey/active-run': typeof ApiSessionsSessionKeyActiveRunRoute
   '/api/sessions/$sessionKey/status': typeof ApiSessionsSessionKeyStatusRoute
 }
@@ -630,11 +686,14 @@ export interface FileRoutesByTo {
   '/conductor': typeof ConductorRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
+  '/health': typeof HealthRoute
   '/jobs': typeof JobsRoute
   '/memory': typeof MemoryRoute
+  '/memory-v2': typeof MemoryV2Route
   '/operations': typeof OperationsRoute
   '/profiles': typeof ProfilesRoute
   '/skills': typeof SkillsRoute
+  '/system': typeof SystemRoute
   '/tasks': typeof TasksRoute
   '/terminal': typeof TerminalRoute
   '/api/auth': typeof ApiAuthRoute
@@ -647,6 +706,7 @@ export interface FileRoutesByTo {
   '/api/context-usage': typeof ApiContextUsageRoute
   '/api/crew-status': typeof ApiCrewStatusRoute
   '/api/events': typeof ApiEventsRoute
+  '/api/fact-store': typeof ApiFactStoreRoute
   '/api/files': typeof ApiFilesRoute
   '/api/gateway-status': typeof ApiGatewayStatusRoute
   '/api/hermes-config': typeof ApiHermesConfigRoute
@@ -679,6 +739,8 @@ export interface FileRoutesByTo {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat': typeof ChatIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/api/health/metrics': typeof ApiHealthMetricsRoute
+  '/api/health/peptides': typeof ApiHealthPeptidesRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -709,6 +771,8 @@ export interface FileRoutesByTo {
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
   '/api/skills/uninstall': typeof ApiSkillsUninstallRoute
+  '/api/system/cronjobs': typeof ApiSystemCronjobsRoute
+  '/api/system/health': typeof ApiSystemHealthRoute
   '/api/sessions/$sessionKey/active-run': typeof ApiSessionsSessionKeyActiveRunRoute
   '/api/sessions/$sessionKey/status': typeof ApiSessionsSessionKeyStatusRoute
 }
@@ -719,12 +783,15 @@ export interface FileRoutesById {
   '/conductor': typeof ConductorRoute
   '/dashboard': typeof DashboardRoute
   '/files': typeof FilesRoute
+  '/health': typeof HealthRoute
   '/jobs': typeof JobsRoute
   '/memory': typeof MemoryRoute
+  '/memory-v2': typeof MemoryV2Route
   '/operations': typeof OperationsRoute
   '/profiles': typeof ProfilesRoute
   '/settings': typeof SettingsRouteWithChildren
   '/skills': typeof SkillsRoute
+  '/system': typeof SystemRoute
   '/tasks': typeof TasksRoute
   '/terminal': typeof TerminalRoute
   '/api/auth': typeof ApiAuthRoute
@@ -737,6 +804,7 @@ export interface FileRoutesById {
   '/api/context-usage': typeof ApiContextUsageRoute
   '/api/crew-status': typeof ApiCrewStatusRoute
   '/api/events': typeof ApiEventsRoute
+  '/api/fact-store': typeof ApiFactStoreRoute
   '/api/files': typeof ApiFilesRoute
   '/api/gateway-status': typeof ApiGatewayStatusRoute
   '/api/hermes-config': typeof ApiHermesConfigRoute
@@ -769,6 +837,8 @@ export interface FileRoutesById {
   '/settings/providers': typeof SettingsProvidersRoute
   '/chat/': typeof ChatIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/api/health/metrics': typeof ApiHealthMetricsRoute
+  '/api/health/peptides': typeof ApiHealthPeptidesRoute
   '/api/hermes-jobs/$jobId': typeof ApiHermesJobsJobIdRoute
   '/api/hermes-proxy/$': typeof ApiHermesProxySplatRoute
   '/api/hermes-tasks/$taskId': typeof ApiHermesTasksTaskIdRoute
@@ -799,6 +869,8 @@ export interface FileRoutesById {
   '/api/skills/install': typeof ApiSkillsInstallRoute
   '/api/skills/toggle': typeof ApiSkillsToggleRoute
   '/api/skills/uninstall': typeof ApiSkillsUninstallRoute
+  '/api/system/cronjobs': typeof ApiSystemCronjobsRoute
+  '/api/system/health': typeof ApiSystemHealthRoute
   '/api/sessions/$sessionKey/active-run': typeof ApiSessionsSessionKeyActiveRunRoute
   '/api/sessions/$sessionKey/status': typeof ApiSessionsSessionKeyStatusRoute
 }
@@ -810,12 +882,15 @@ export interface FileRouteTypes {
     | '/conductor'
     | '/dashboard'
     | '/files'
+    | '/health'
     | '/jobs'
     | '/memory'
+    | '/memory-v2'
     | '/operations'
     | '/profiles'
     | '/settings'
     | '/skills'
+    | '/system'
     | '/tasks'
     | '/terminal'
     | '/api/auth'
@@ -828,6 +903,7 @@ export interface FileRouteTypes {
     | '/api/context-usage'
     | '/api/crew-status'
     | '/api/events'
+    | '/api/fact-store'
     | '/api/files'
     | '/api/gateway-status'
     | '/api/hermes-config'
@@ -860,6 +936,8 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat/'
     | '/settings/'
+    | '/api/health/metrics'
+    | '/api/health/peptides'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -890,6 +968,8 @@ export interface FileRouteTypes {
     | '/api/skills/install'
     | '/api/skills/toggle'
     | '/api/skills/uninstall'
+    | '/api/system/cronjobs'
+    | '/api/system/health'
     | '/api/sessions/$sessionKey/active-run'
     | '/api/sessions/$sessionKey/status'
   fileRoutesByTo: FileRoutesByTo
@@ -899,11 +979,14 @@ export interface FileRouteTypes {
     | '/conductor'
     | '/dashboard'
     | '/files'
+    | '/health'
     | '/jobs'
     | '/memory'
+    | '/memory-v2'
     | '/operations'
     | '/profiles'
     | '/skills'
+    | '/system'
     | '/tasks'
     | '/terminal'
     | '/api/auth'
@@ -916,6 +999,7 @@ export interface FileRouteTypes {
     | '/api/context-usage'
     | '/api/crew-status'
     | '/api/events'
+    | '/api/fact-store'
     | '/api/files'
     | '/api/gateway-status'
     | '/api/hermes-config'
@@ -948,6 +1032,8 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat'
     | '/settings'
+    | '/api/health/metrics'
+    | '/api/health/peptides'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -978,6 +1064,8 @@ export interface FileRouteTypes {
     | '/api/skills/install'
     | '/api/skills/toggle'
     | '/api/skills/uninstall'
+    | '/api/system/cronjobs'
+    | '/api/system/health'
     | '/api/sessions/$sessionKey/active-run'
     | '/api/sessions/$sessionKey/status'
   id:
@@ -987,12 +1075,15 @@ export interface FileRouteTypes {
     | '/conductor'
     | '/dashboard'
     | '/files'
+    | '/health'
     | '/jobs'
     | '/memory'
+    | '/memory-v2'
     | '/operations'
     | '/profiles'
     | '/settings'
     | '/skills'
+    | '/system'
     | '/tasks'
     | '/terminal'
     | '/api/auth'
@@ -1005,6 +1096,7 @@ export interface FileRouteTypes {
     | '/api/context-usage'
     | '/api/crew-status'
     | '/api/events'
+    | '/api/fact-store'
     | '/api/files'
     | '/api/gateway-status'
     | '/api/hermes-config'
@@ -1037,6 +1129,8 @@ export interface FileRouteTypes {
     | '/settings/providers'
     | '/chat/'
     | '/settings/'
+    | '/api/health/metrics'
+    | '/api/health/peptides'
     | '/api/hermes-jobs/$jobId'
     | '/api/hermes-proxy/$'
     | '/api/hermes-tasks/$taskId'
@@ -1067,6 +1161,8 @@ export interface FileRouteTypes {
     | '/api/skills/install'
     | '/api/skills/toggle'
     | '/api/skills/uninstall'
+    | '/api/system/cronjobs'
+    | '/api/system/health'
     | '/api/sessions/$sessionKey/active-run'
     | '/api/sessions/$sessionKey/status'
   fileRoutesById: FileRoutesById
@@ -1077,12 +1173,15 @@ export interface RootRouteChildren {
   ConductorRoute: typeof ConductorRoute
   DashboardRoute: typeof DashboardRoute
   FilesRoute: typeof FilesRoute
+  HealthRoute: typeof HealthRoute
   JobsRoute: typeof JobsRoute
   MemoryRoute: typeof MemoryRoute
+  MemoryV2Route: typeof MemoryV2Route
   OperationsRoute: typeof OperationsRoute
   ProfilesRoute: typeof ProfilesRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   SkillsRoute: typeof SkillsRoute
+  SystemRoute: typeof SystemRoute
   TasksRoute: typeof TasksRoute
   TerminalRoute: typeof TerminalRoute
   ApiAuthRoute: typeof ApiAuthRoute
@@ -1095,6 +1194,7 @@ export interface RootRouteChildren {
   ApiContextUsageRoute: typeof ApiContextUsageRoute
   ApiCrewStatusRoute: typeof ApiCrewStatusRoute
   ApiEventsRoute: typeof ApiEventsRoute
+  ApiFactStoreRoute: typeof ApiFactStoreRoute
   ApiFilesRoute: typeof ApiFilesRoute
   ApiGatewayStatusRoute: typeof ApiGatewayStatusRoute
   ApiHermesConfigRoute: typeof ApiHermesConfigRoute
@@ -1124,6 +1224,8 @@ export interface RootRouteChildren {
   ApiWorkspaceRoute: typeof ApiWorkspaceRoute
   ChatSessionKeyRoute: typeof ChatSessionKeyRoute
   ChatIndexRoute: typeof ChatIndexRoute
+  ApiHealthMetricsRoute: typeof ApiHealthMetricsRoute
+  ApiHealthPeptidesRoute: typeof ApiHealthPeptidesRoute
   ApiHermesProxySplatRoute: typeof ApiHermesProxySplatRoute
   ApiKnowledgeConfigRoute: typeof ApiKnowledgeConfigRoute
   ApiKnowledgeGraphRoute: typeof ApiKnowledgeGraphRoute
@@ -1143,6 +1245,8 @@ export interface RootRouteChildren {
   ApiProfilesReadRoute: typeof ApiProfilesReadRoute
   ApiProfilesRenameRoute: typeof ApiProfilesRenameRoute
   ApiProfilesUpdateRoute: typeof ApiProfilesUpdateRoute
+  ApiSystemCronjobsRoute: typeof ApiSystemCronjobsRoute
+  ApiSystemHealthRoute: typeof ApiSystemHealthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1159,6 +1263,13 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/tasks'
       preLoaderRoute: typeof TasksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system': {
+      id: '/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof SystemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/skills': {
@@ -1189,6 +1300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/memory-v2': {
+      id: '/memory-v2'
+      path: '/memory-v2'
+      fullPath: '/memory-v2'
+      preLoaderRoute: typeof MemoryV2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/memory': {
       id: '/memory'
       path: '/memory'
@@ -1201,6 +1319,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs'
       fullPath: '/jobs'
       preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/files': {
@@ -1462,6 +1587,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiFilesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/fact-store': {
+      id: '/api/fact-store'
+      path: '/api/fact-store'
+      fullPath: '/api/fact-store'
+      preLoaderRoute: typeof ApiFactStoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/events': {
       id: '/api/events'
       path: '/api/events'
@@ -1530,6 +1662,20 @@ declare module '@tanstack/react-router' {
       path: '/api/auth'
       fullPath: '/api/auth'
       preLoaderRoute: typeof ApiAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/system/health': {
+      id: '/api/system/health'
+      path: '/api/system/health'
+      fullPath: '/api/system/health'
+      preLoaderRoute: typeof ApiSystemHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/system/cronjobs': {
+      id: '/api/system/cronjobs'
+      path: '/api/system/cronjobs'
+      fullPath: '/api/system/cronjobs'
+      preLoaderRoute: typeof ApiSystemCronjobsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/skills/uninstall': {
@@ -1742,6 +1888,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHermesJobsJobIdRouteImport
       parentRoute: typeof ApiHermesJobsRoute
     }
+    '/api/health/peptides': {
+      id: '/api/health/peptides'
+      path: '/api/health/peptides'
+      fullPath: '/api/health/peptides'
+      preLoaderRoute: typeof ApiHealthPeptidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health/metrics': {
+      id: '/api/health/metrics'
+      path: '/api/health/metrics'
+      fullPath: '/api/health/metrics'
+      preLoaderRoute: typeof ApiHealthMetricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sessions/$sessionKey/status': {
       id: '/api/sessions/$sessionKey/status'
       path: '/$sessionKey/status'
@@ -1857,12 +2017,15 @@ const rootRouteChildren: RootRouteChildren = {
   ConductorRoute: ConductorRoute,
   DashboardRoute: DashboardRoute,
   FilesRoute: FilesRoute,
+  HealthRoute: HealthRoute,
   JobsRoute: JobsRoute,
   MemoryRoute: MemoryRoute,
+  MemoryV2Route: MemoryV2Route,
   OperationsRoute: OperationsRoute,
   ProfilesRoute: ProfilesRoute,
   SettingsRoute: SettingsRouteWithChildren,
   SkillsRoute: SkillsRoute,
+  SystemRoute: SystemRoute,
   TasksRoute: TasksRoute,
   TerminalRoute: TerminalRoute,
   ApiAuthRoute: ApiAuthRoute,
@@ -1875,6 +2038,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiContextUsageRoute: ApiContextUsageRoute,
   ApiCrewStatusRoute: ApiCrewStatusRoute,
   ApiEventsRoute: ApiEventsRoute,
+  ApiFactStoreRoute: ApiFactStoreRoute,
   ApiFilesRoute: ApiFilesRoute,
   ApiGatewayStatusRoute: ApiGatewayStatusRoute,
   ApiHermesConfigRoute: ApiHermesConfigRoute,
@@ -1904,6 +2068,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiWorkspaceRoute: ApiWorkspaceRoute,
   ChatSessionKeyRoute: ChatSessionKeyRoute,
   ChatIndexRoute: ChatIndexRoute,
+  ApiHealthMetricsRoute: ApiHealthMetricsRoute,
+  ApiHealthPeptidesRoute: ApiHealthPeptidesRoute,
   ApiHermesProxySplatRoute: ApiHermesProxySplatRoute,
   ApiKnowledgeConfigRoute: ApiKnowledgeConfigRoute,
   ApiKnowledgeGraphRoute: ApiKnowledgeGraphRoute,
@@ -1923,16 +2089,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiProfilesReadRoute: ApiProfilesReadRoute,
   ApiProfilesRenameRoute: ApiProfilesRenameRoute,
   ApiProfilesUpdateRoute: ApiProfilesUpdateRoute,
+  ApiSystemCronjobsRoute: ApiSystemCronjobsRoute,
+  ApiSystemHealthRoute: ApiSystemHealthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
