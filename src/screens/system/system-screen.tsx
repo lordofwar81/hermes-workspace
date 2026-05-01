@@ -12,6 +12,8 @@ export function SystemScreen() {
   // Get model statuses for the model info cards
   const minimaxStatus =
     services?.find((s) => s.name.includes('MiniMax'))?.status ?? 'down'
+  const macStudioStatus =
+    services?.find((s) => s.name.includes('Qwen'))?.status ?? 'down'
   const bgeStatus =
     services?.find((s) => s.name.includes('BGE'))?.status ?? 'down'
 
@@ -62,7 +64,7 @@ export function SystemScreen() {
           <h2 className="mb-3 text-sm font-semibold text-primary-900 dark:text-neutral-200">
             Local Models
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
             <ModelInfoCard
               title="MiniMax-M2.7-APEX-I-Mini"
               description="Heavy computation & complex reasoning (81GB, Strix Halo)"
@@ -70,6 +72,14 @@ export function SystemScreen() {
               context="65K tokens"
               endpoint="http://192.168.1.229:8199/v1"
               status={minimaxStatus}
+            />
+            <ModelInfoCard
+              title="Qwen3.6-35B-A3B (Mac Studio)"
+              description="Task orchestration & routing (MLX-4bit, Apple Silicon)"
+              size="18 GB"
+              context="32K tokens"
+              endpoint="http://192.168.1.149:1234/v1"
+              status={macStudioStatus}
             />
             <ModelInfoCard
               title="BGE-M3"
