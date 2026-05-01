@@ -16,14 +16,20 @@ interface BusState {
   started: boolean
 }
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __hermes_chat_event_bus__: BusState | undefined
+}
+
 function getBus(): BusState {
-  if (!(globalThis as any)[BUS_KEY]) {
-    ;(globalThis as any)[BUS_KEY] = {
+  const bus = globalThis.__hermes_chat_event_bus__
+  if (!bus) {
+    globalThis.__hermes_chat_event_bus__ = {
       subscribers: new Set<ChatSSESubscriber>(),
       started: false,
     }
   }
-  return (globalThis as any)[BUS_KEY]
+  return globalThis.__hermes_chat_event_bus__!
 }
 
 function broadcast(event: string, data: Record<string, unknown>): void {

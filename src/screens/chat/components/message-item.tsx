@@ -1947,10 +1947,11 @@ function MessageItemComponent({
   // Get tool calls from this message (for assistant messages)
   const toolCalls = role === 'assistant' ? getToolCallsFromMessage(message) : []
   const embeddedStreamToolCalls = useMemo(() => {
-    const value = (message as any).__streamToolCalls
+    const msgRecord = message as Record<string, unknown>
+    const value = msgRecord.__streamToolCalls
     if (!Array.isArray(value)) return []
     return value
-      .map((entry: any) => ({
+      .map((entry: Record<string, unknown>) => ({
         id: typeof entry?.id === 'string' ? entry.id : '',
         name: typeof entry?.name === 'string' ? entry.name : 'tool',
         phase: normalizeStreamToolPhase(entry?.phase),
@@ -1958,7 +1959,7 @@ function MessageItemComponent({
         preview: typeof entry?.preview === 'string' ? entry.preview : undefined,
         result: typeof entry?.result === 'string' ? entry.result : undefined,
       }))
-      .filter((entry: any) => entry.id.length > 0)
+      .filter((entry: Record<string, unknown>) => typeof entry.id === 'string' && entry.id.length > 0)
   }, [message])
   const effectiveStreamToolCalls =
     streamToolCalls.length > 0 ? streamToolCalls : embeddedStreamToolCalls
@@ -2026,10 +2027,11 @@ function MessageItemComponent({
           (typeof toolMessage.toolName === 'string' &&
             toolMessage.toolName.trim()) ||
           parseToolNameFromMessageText(messageText)
+        const toolMsgRecord = toolMessage as Record<string, unknown>
         return {
           key:
-            (typeof (toolMessage as any).id === 'string' &&
-              (toolMessage as any).id) ||
+            (typeof toolMsgRecord.id === 'string' &&
+              toolMsgRecord.id) ||
             (typeof toolMessage.toolCallId === 'string' &&
               toolMessage.toolCallId) ||
             `${toolType}-${index}`,
@@ -2295,7 +2297,7 @@ function MessageItemComponent({
         </div>
       )}
       {/* Narration messages (tool-call activity) — compact collapsible row */}
-      {!isUser && (message as any).__isNarration && hasText && (
+      {!isUser && Boolean((message as Record<string, unknown>).__isNarration) && hasText && (
         <div className="w-full max-w-[var(--chat-content-max-width)]">
           <details className="group/narration rounded-lg border border-primary-200/50 bg-primary-50/30 hover:bg-primary-50 dark:hover:bg-primary-800/50 transition-colors">
             <summary className="flex items-center gap-2 cursor-pointer select-none px-3 py-2 list-none [&::-webkit-details-marker]:hidden">

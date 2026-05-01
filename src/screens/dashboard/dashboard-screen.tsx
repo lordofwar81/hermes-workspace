@@ -776,7 +776,7 @@ export function DashboardScreen() {
             }
             const cur = document.documentElement.getAttribute('data-theme') || 'hermes-official'
             const nextDataTheme = LIGHT_DARK_PAIRS[cur] || (isDark ? 'hermes-official-light' : 'hermes-official')
-            import('@/lib/theme').then(({ setTheme }) => { setTheme(nextDataTheme as any) })
+            import('@/lib/theme').then(({ setTheme }) => { setTheme(nextDataTheme as import('@/lib/theme').ThemeId) })
             const nextMode = nextDataTheme.endsWith('-light') ? 'light' : 'dark'
             applyTheme(nextMode)
             updateSettings({ theme: nextMode })

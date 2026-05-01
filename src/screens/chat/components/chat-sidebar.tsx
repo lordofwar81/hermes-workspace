@@ -1,4 +1,4 @@
-import { HugeiconsIcon } from '@hugeicons/react'
+import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 import {
   ArrowDown01Icon,
   ArrowLeft01Icon,
@@ -92,7 +92,7 @@ function ThemeToggleMini() {
         const nextDataTheme = LIGHT_DARK_PAIRS[currentDataTheme] || (isDark ? `${currentDataTheme}-light` : currentDataTheme.replace(/-light$/, ''))
         // Import and call setTheme to persist and apply
         import('@/lib/theme').then(({ setTheme }) => {
-          setTheme(nextDataTheme as any)
+          setTheme(nextDataTheme as import('@/lib/theme').ThemeId)
         })
         // Also update settings hook
         const nextMode = nextDataTheme.endsWith('-light') ? 'light' : 'dark'
@@ -177,7 +177,7 @@ function NavItem({
     item.badge === 'error-dot' ? (
       <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
         <HugeiconsIcon
-          icon={item.icon as any}
+          icon={item.icon as IconSvgElement}
           size={20}
           strokeWidth={1.5}
           className="size-5 shrink-0"
@@ -186,7 +186,7 @@ function NavItem({
       </span>
     ) : (
       <HugeiconsIcon
-        icon={item.icon as any}
+        icon={item.icon as IconSvgElement}
         size={20}
         strokeWidth={1.5}
         className="size-5 shrink-0"

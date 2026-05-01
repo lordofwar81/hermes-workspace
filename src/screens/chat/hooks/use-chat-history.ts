@@ -294,9 +294,10 @@ export function useChatHistory({
         return readPortableHistory()
       }
 
-      const cached = queryClient.getQueryData(historyKey)
-      const optimisticMessages = Array.isArray((cached as any)?.messages)
-        ? (cached as any).messages.filter((message: any) => {
+      const cached = queryClient.getQueryData(historyKey) as Record<string, unknown> | undefined
+      const cachedMessages = cached?.messages
+      const optimisticMessages = Array.isArray(cachedMessages)
+        ? (cachedMessages as Array<ChatMessage>).filter((message: ChatMessage) => {
             if (message.status === 'sending') return true
             if (message.__optimisticId) return true
             return Boolean(message.clientId)
@@ -430,11 +431,12 @@ export function useChatHistory({
         const text = textFromMessage(msg)
         const execNotification = parseExecNotification(text)
         if (execNotification) {
-          ;(msg as any).__execNotification = execNotification
+          ;(msg as Record<string, unknown>).__execNotification = execNotification
           return true
         }
-        if ((msg as any).__execNotification) {
-          delete (msg as any).__execNotification
+        const msgRecord = msg as Record<string, unknown>
+        if (msgRecord.__execNotification) {
+          delete msgRecord.__execNotification
         }
         // Filter out system event forwards (subagent task announcements etc)
         if (text.startsWith('A subagent task')) return false
@@ -514,7 +516,7 @@ export function useChatHistory({
           filtered.splice(i, 1)
           i--
         } else {
-          ;(msg as any).__isNarration = true
+          ;(msg as Record<string, unknown>).__isNarration = true
         }
       }
     }

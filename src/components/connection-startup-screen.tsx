@@ -54,6 +54,7 @@ type Props = { onConnected: (status: AuthStatus) => void }
 declare global {
   interface Window {
     __dismissSplash?: () => void
+    __GATEWAY_URL__?: string
   }
 }
 

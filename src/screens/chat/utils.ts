@@ -164,12 +164,13 @@ function normalizeTimestamp(value: unknown): number | null {
 }
 
 export function getMessageTimestamp(message: ChatMessage): number {
+  const msg = message as Record<string, unknown>
   const candidates = [
-    (message as any).createdAt,
-    (message as any).created_at,
-    (message as any).timestamp,
-    (message as any).time,
-    (message as any).ts,
+    msg.createdAt,
+    msg.created_at,
+    msg.timestamp,
+    msg.time,
+    msg.ts,
   ]
 
   for (const candidate of candidates) {

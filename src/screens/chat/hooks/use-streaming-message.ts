@@ -697,11 +697,11 @@ export function useStreamingMessage(options: UseStreamingMessageOptions = {}) {
               content: [
                 ...(thinkingRef.current
                   ? [{ type: 'thinking' as const, thinking: thinkingRef.current }]
-                  : []),
-                { type: 'text' as const, text: fullTextRef.current },
-              ],
-              __streamingStatus: 'interrupted',
-            } as any,
+                : []),
+              { type: 'text' as const, text: fullTextRef.current },
+            ],
+            __streamingStatus: 'interrupted',
+          } as ChatMessage,
           })
         }
         eventSourceRef.current.abort()

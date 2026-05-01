@@ -35,7 +35,7 @@ type SpeechRecognitionConstructor = new () => SpeechRecognitionInstance
 function getSpeechRecognition(): SpeechRecognitionConstructor | null {
   if (typeof window === 'undefined') return null
 
-  const win = window as any
+  const win = window as Window & { SpeechRecognition?: SpeechRecognitionConstructor; webkitSpeechRecognition?: SpeechRecognitionConstructor }
   return win.SpeechRecognition ?? win.webkitSpeechRecognition ?? null
 }
 

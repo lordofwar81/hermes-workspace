@@ -475,7 +475,7 @@ export function moveHistoryMessages(
   const messages = Array.isArray(fromData.messages) ? fromData.messages : []
   queryClient.setQueryData(toKey, {
     sessionKey: toSessionKey,
-    sessionId: (fromData as any).sessionId,
+    sessionId: fromData.sessionId as string | undefined,
     messages,
   })
   queryClient.removeQueries({ queryKey: fromKey, exact: true })

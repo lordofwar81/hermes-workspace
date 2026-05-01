@@ -113,7 +113,8 @@ const CIRCUIT_BREAKER_COOLDOWN_MS = 10000 // how long to stay open
 
 export function getGatewayConfig() {
   // Check if browser set a custom gateway URL (for network/mobile access)
-  const browserUrl = typeof window !== 'undefined' ? (window as any).__GATEWAY_URL__ : undefined
+  const win = typeof window !== 'undefined' ? window : undefined
+  const browserUrl = win?.__GATEWAY_URL__
   const url = browserUrl || process.env.HERMES_GATEWAY_URL?.trim() || 'ws://127.0.0.1:18789'
   let token = process.env.HERMES_GATEWAY_TOKEN?.trim() || ''
   const password = process.env.HERMES_GATEWAY_PASSWORD?.trim() || ''
@@ -749,8 +750,10 @@ declare global {
   var __clawsuite_gateway_client__: GatewayClient | undefined
   // eslint-disable-next-line no-var
   var __clawsuite_active_send_stream_runs__: Set<string> | undefined
+  // eslint-disable-next-line no-var
+  var __clawsuite_gateway_last_reconnect__: number | undefined
 }
-const existingClient = (globalThis as any)[GW_KEY] as GatewayClient | undefined
+const existingClient = globalThis.__clawsuite_gateway_client__
 if (existingClient) {
   const snapshot = existingClient.getConnectionSnapshot()
   // Only trigger reconnect if disconnected AND enough time has passed since last attempt.
@@ -758,12 +761,12 @@ if (existingClient) {
   // both would see a healthy singleton and both would fire ensureConnected(), causing an
   // HTTPError on the first request before the doubled handshake settles.
   const GW_LAST_RECONNECT_KEY = '__clawsuite_gateway_last_reconnect__' as const
-  const lastReconnect = (globalThis as any)[GW_LAST_RECONNECT_KEY] as number | undefined
+  let lastReconnect: number | undefined = globalThis.__clawsuite_gateway_last_reconnect__
   const cooldownMs = 5_000
   const now = Date.now()
   const cooledDown = !lastReconnect || now - lastReconnect > cooldownMs
   if ((!snapshot.authenticated || snapshot.readyState !== WebSocket.OPEN) && cooledDown) {
-    ;(globalThis as any)[GW_LAST_RECONNECT_KEY] = now
+    globalThis.__clawsuite_gateway_last_reconnect__ = now
     console.warn('[gateway] WARNING: Reused singleton is disconnected — triggering reconnect')
     existingClient.ensureConnected().catch((error: unknown) => {
       const message = error instanceof Error ? error.message : String(error)
@@ -772,14 +775,14 @@ if (existingClient) {
   }
 }
 let gatewayClient: GatewayClient = existingClient ?? new GatewayClient()
-;(globalThis as any)[GW_KEY] = gatewayClient
+globalThis.__clawsuite_gateway_client__ = gatewayClient
 
 // Prevent gateway WebSocket errors from crashing the Vite dev server.
 // Unhandled rejections from in-flight RPC calls during disconnect would
 // otherwise kill the Node process.
 const GW_UHR_KEY = '__clawsuite_gateway_uhr_installed__' as const
-if (!(globalThis as any)[GW_UHR_KEY]) {
-  ;(globalThis as any)[GW_UHR_KEY] = true
+if (!(globalThis as Record<string, unknown>)[GW_UHR_KEY]) {
+  ;(globalThis as Record<string, unknown>)[GW_UHR_KEY] = true
   process.on('unhandledRejection', (reason: unknown) => {
     const msg = reason instanceof Error ? reason.message : String(reason)
     // Only swallow gateway-related rejections — let others propagate
@@ -816,9 +819,8 @@ if (!(globalThis as any)[GW_UHR_KEY]) {
   process.on('SIGINT', shutdownHandler)
 }
 const activeSendStreamRuns =
-  (globalThis as any)[ACTIVE_SEND_RUNS_KEY] as Set<string> | undefined
-  ?? new Set<string>()
-;(globalThis as any)[ACTIVE_SEND_RUNS_KEY] = activeSendStreamRuns
+  globalThis.__clawsuite_active_send_stream_runs__ ?? new Set<string>()
+globalThis.__clawsuite_active_send_stream_runs__ = activeSendStreamRuns
 
 export async function gatewayRpc<TPayload = unknown>(
   method: string,
@@ -863,6 +865,6 @@ export async function cleanupGatewayConnection(): Promise<void> {
 export async function gatewayReconnect(): Promise<void> {
   await gatewayClient.shutdown()
   gatewayClient = new GatewayClient()
-  ;(globalThis as any)[GW_KEY] = gatewayClient
+  globalThis.__clawsuite_gateway_client__ = gatewayClient
   await gatewayClient.ensureConnected()
 }

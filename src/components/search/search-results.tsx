@@ -1,4 +1,5 @@
 import { Search01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 import { SearchResultItem } from './search-result-item'
 import type { SearchResultItemData } from './search-result-item'
 import { EmptyState } from '@/components/empty-state'
@@ -21,7 +22,7 @@ export function SearchResults({
   if (results.length === 0) {
     return (
       <EmptyState
-        icon={Search01Icon as any}
+        icon={Search01Icon as IconSvgElement}
         title="No results found"
         description={
           query ? `Try a different search term` : 'Start typing to search'
