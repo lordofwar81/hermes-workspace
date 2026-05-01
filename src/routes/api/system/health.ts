@@ -19,17 +19,21 @@ export const Route = createFileRoute('/api/system/health')({
             }
 
             case 'models': {
-              const [minimax, bge] = await Promise.all([
+              const [minimax, macStudio, bge] = await Promise.all([
                 checkService(
                   'MiniMax (Strix Halo)',
                   'http://192.168.1.229:8199/v1/models',
+                ),
+                checkService(
+                  'Qwen3.6 (Mac Studio)',
+                  'http://192.168.1.149:1234/v1/models',
                 ),
                 checkService(
                   'BGE-M3 Embeddings',
                   'http://127.0.0.1:11434/api/tags',
                 ),
               ])
-              return Response.json({ services: [minimax, bge] })
+              return Response.json({ services: [minimax, macStudio, bge] })
             }
 
             case 'platforms': {
@@ -42,7 +46,7 @@ export const Route = createFileRoute('/api/system/health')({
 
             case 'all':
             default: {
-              const [gateway, minimax, bge, dashboard] = await Promise.all([
+              const [gateway, minimax, macStudio, bge, dashboard] = await Promise.all([
                 checkService(
                   'Hermes Gateway',
                   'http://127.0.0.1:8642/health',
@@ -50,6 +54,10 @@ export const Route = createFileRoute('/api/system/health')({
                 checkService(
                   'MiniMax (Strix Halo)',
                   'http://192.168.1.229:8199/v1/models',
+                ),
+                checkService(
+                  'Qwen3.6 (Mac Studio)',
+                  'http://192.168.1.149:1234/v1/models',
                 ),
                 checkService(
                   'BGE-M3 Embeddings',
@@ -61,7 +69,7 @@ export const Route = createFileRoute('/api/system/health')({
                 ),
               ])
               return Response.json({
-                services: [gateway, minimax, bge, dashboard],
+                services: [gateway, minimax, macStudio, bge, dashboard],
               })
             }
           }
