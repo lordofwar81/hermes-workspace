@@ -800,7 +800,7 @@ export function DashboardScreen() {
         <p className="micro-label" style={{ color: 'var(--theme-muted)' }}>
           Hermes Workspace
         </p>
-        <div className="mt-1 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-1 grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6">
           <QuickAction
             label="New Chat"
             icon="💬"
@@ -817,6 +817,18 @@ export function DashboardScreen() {
             icon="💻"
             accentColor={palette.success}
             onClick={() => navigate({ to: '/terminal' })}
+          />
+          <QuickAction
+            label="Health"
+            icon="💊"
+            accentColor={palette.danger}
+            onClick={() => navigate({ to: '/health' })}
+          />
+          <QuickAction
+            label="System"
+            icon="🖥️"
+            accentColor={palette.accentSecondary}
+            onClick={() => navigate({ to: '/system' })}
           />
           <QuickAction
             label="Skills"
