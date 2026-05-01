@@ -106,9 +106,12 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
     if (path.startsWith('/conductor')) return 5
     if (path.startsWith('/operations')) return 6
     if (path.startsWith('/memory')) return 7
-    if (path.startsWith('/skills')) return 8
-    if (path.startsWith('/profiles')) return 9
-    if (path.startsWith('/settings')) return 10
+    if (path.startsWith('/memory-v2')) return 7
+    if (path.startsWith('/health')) return 8
+    if (path.startsWith('/system')) return 9
+    if (path.startsWith('/skills')) return 10
+    if (path.startsWith('/profiles')) return 11
+    if (path.startsWith('/settings')) return 12
     return -1
   }, [])
 
@@ -137,6 +140,8 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
     if (pathname.startsWith('/conductor')) return 'Conductor'
     if (pathname.startsWith('/operations')) return 'Operations'
     if (pathname.startsWith('/memory')) return 'Memory'
+    if (pathname.startsWith('/health')) return 'Health'
+    if (pathname.startsWith('/system')) return 'System'
     if (pathname.startsWith('/skills')) return 'Skills'
     if (pathname.startsWith('/profiles')) return 'Profiles'
     if (pathname.startsWith('/settings')) return 'Settings'

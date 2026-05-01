@@ -7,7 +7,9 @@ import {
   CommandLineIcon,
   DashboardSquare01Icon,
   File01Icon,
+  HealthIcon,
   PuzzleIcon,
+  ServerStackIcon,
   Settings01Icon,
   UserGroupIcon,
 } from '@hugeicons/core-free-icons'
@@ -84,6 +86,20 @@ const TABS: Array<TabItem> = [
     icon: BrainIcon,
     to: '/memory',
     match: (p) => p.startsWith('/memory'),
+  },
+  {
+    id: 'health',
+    label: 'Health',
+    icon: HealthIcon,
+    to: '/health',
+    match: (p) => p.startsWith('/health'),
+  },
+  {
+    id: 'system',
+    label: 'System',
+    icon: ServerStackIcon,
+    to: '/system',
+    match: (p) => p.startsWith('/system'),
   },
   {
     id: 'skills',

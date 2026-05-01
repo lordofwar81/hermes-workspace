@@ -8,9 +8,11 @@ import {
   CommandLineIcon,
   DashboardSquare01Icon,
   File01Icon,
+  HealthIcon,
   Menu01Icon,
   PuzzleIcon,
   Rocket01Icon,
+  ServerStackIcon,
   Settings01Icon,
   UserGroupIcon,
 } from '@hugeicons/core-free-icons'
@@ -72,6 +74,20 @@ const NAV_ITEMS = [
     icon: BrainIcon,
     to: '/memory',
     match: (p: string) => p.startsWith('/memory'),
+  },
+  {
+    id: 'health',
+    label: 'Health',
+    icon: HealthIcon,
+    to: '/health',
+    match: (p: string) => p.startsWith('/health'),
+  },
+  {
+    id: 'system',
+    label: 'System',
+    icon: ServerStackIcon,
+    to: '/system',
+    match: (p: string) => p.startsWith('/system'),
   },
   {
     id: 'skills',

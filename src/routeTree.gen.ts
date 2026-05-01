@@ -641,7 +641,7 @@ export interface FileRoutesByFullPath {
   '/chat/$sessionKey': typeof ChatSessionKeyRoute
   '/settings/mcp': typeof SettingsMcpRoute
   '/settings/providers': typeof SettingsProvidersRoute
-  '/chat/': typeof ChatIndexRoute
+  '/chat': typeof ChatIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/api/health/metrics': typeof ApiHealthMetricsRoute
   '/api/health/peptides': typeof ApiHealthPeptidesRoute
@@ -934,7 +934,7 @@ export interface FileRouteTypes {
     | '/chat/$sessionKey'
     | '/settings/mcp'
     | '/settings/providers'
-    | '/chat/'
+    | '/chat'
     | '/settings/'
     | '/api/health/metrics'
     | '/api/health/peptides'
@@ -1373,7 +1373,7 @@ declare module '@tanstack/react-router' {
     '/chat/': {
       id: '/chat/'
       path: '/chat'
-      fullPath: '/chat/'
+      fullPath: '/chat'
       preLoaderRoute: typeof ChatIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -2095,3 +2095,11 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

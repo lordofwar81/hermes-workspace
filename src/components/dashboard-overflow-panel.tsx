@@ -5,9 +5,11 @@ import {
   BrainIcon,
   ComputerTerminal01Icon,
   File01Icon,
+  HealthIcon,
   MessageMultiple01Icon,
   Moon02Icon,
   PuzzleIcon,
+  ServerStackIcon,
   Settings01Icon,
   Sun02Icon,
   UserGroupIcon,
@@ -26,6 +28,8 @@ const SYSTEM_ITEMS: Array<OverflowItem> = [
   { icon: File01Icon, label: 'Files', to: '/files' },
   { icon: ComputerTerminal01Icon, label: 'Terminal', to: '/terminal' },
   { icon: BrainIcon, label: 'Memory', to: '/memory' },
+  { icon: HealthIcon, label: 'Health', to: '/health' },
+  { icon: ServerStackIcon, label: 'System', to: '/system' },
 ]
 
 const HERMES_ITEMS: Array<OverflowItem> = [
